@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>就餐记录</title>
+
+    <link href="style/common.css" type="text/css" rel="stylesheet">
+    <link href="style/col.css" type="text/css" rel="stylesheet">
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<header>
+    <h1>就餐记录</h1>
+</header>
+
+<div id="app">
+    <nav>
+        <nav-x :user="user"></nav-x>
+    </nav>
+
+    <article>
+        <form novalidate>
+            <p v-if="info" class="info">{{info}}</p>
+            <p>
+                <span v-if="!valiid" class="inlineinfo">工号长度应少于12个字符</span>
+                <span v-if="!valiy" class="inlineinfo">年份应是1000到9999的四位整数</span>
+            </p>
+
+            <label for="eid">
+                工号：<input type="text" maxlength="12" id="eid" v-model="id" placeholder="长度不超过12个字符"
+                          :disabled="disabled" @input="vali('id', $event)" ref="inid">
+            </label>
+
+            <label for="y">
+                <input pattern="^$|^[1-9][0-9]{3}$" id="y" v-model="y" placeholder="全部，1000~9999"
+                       :disabled="disabled" @input="vali('y', $event)" ref="iny"> 年
+            </label>
+
+            <select id="m" v-model="m" :disabled="disabled">
+                <option value="">全部</option>
+                <option v-for="i in 12" :value="i">{{i}}</option>
+            </select>
+            <label for="m">月</label>
+
+            <select id="d" v-model="d" :disabled="disabled">
+                <option value="">全部</option>
+                <option v-for="i in 31" :value="i">{{i}}</option>
+            </select>
+            <label for="d">日</label>
+
+            <button type="button" @click="query" :disabled="disabled">查询</button>
+        </form>
+
+        <table>
+            <colgroup>
+                <col class="id">
+                <col class="name">
+                <col class="sex">
+                <col class="time">
+            </colgroup>
+            <thead>
+            <tr>
+                <th scope="col">工号</th>
+                <th scope="col">姓名</th>
+                <th scope="col">性别</th>
+                <th scope="col">就餐时间</th>
+            </tr>
+            </thead>
+            <tr v-for="e in eat">
+                <td>{{e.emp_id}}</td>
+                <td>{{e.name?e.name:'[Unknown]'}}</td>
+                <td>{{e.sex?e.sex===1?'女':'其他':'男'}}</td>
+                <td>{{e.time.getFullYear()}}-{{e.time.getMonth()+1}}-{{e.time.getDate()}}
+                    {{e.time.getHours()}}:{{e.time.getMinutes()}}:{{e.time.getSeconds()}}</td>
+            </tr>
+        </table>
+
+        <page-bar @update="update" :value="page" :total="total" :re="eat" :disabled="disabled"></page-bar>
+    </article>
+</div>
+
+<script type="text/javascript" src="script/server/req.js"></script>
+<script type="text/javascript" src="script/server/user.js"></script>
+<script type="text/javascript" src="script/server/eat.js"></script>
+<script type="text/javascript" src="script/comp/basic.js"></script>
+<script type="text/javascript" src="script/eat_log.js"></script>
+<!-- p id="raw"></p>
+<script type="text/javascript">
+    eatingLog('','',6,2018,0,30,x=>{
+        document.getElementById('raw').innerHTML = JSON.stringify(x);
+    })
+</script -->
+</body>
+</html>

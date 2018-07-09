@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加职工</title>
+
+    <link href="style/common.css" type="text/css" rel="stylesheet">
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<header>
+    <h1>添加职工</h1>
+</header>
+
+<div id="app">
+    <nav>
+        <nav-x :user="user"></nav-x>
+    </nav>
+
+    <article>
+        <form novalidate>
+            <p>名称后带有“*”的为必填项</p>
+            <p v-if="info" class="info">{{info}}</p>
+            <p>
+                <label for="i">
+                    <span v-if="!valiid" class="inlineinfo">工号长为12个字符，可包含0~9,a~z,_<br></span>
+                    工号*：<input pattern="[0-9a-z_]{12}" id="i" v-model="id" placeholder="12个字符：0~9,a~z,_"
+                               :disabled="disabled" required @input="vali('id', $event)" ref="inid">
+                </label>
+            </p>
+
+            <p>
+                <label for="n">
+                    <span v-if="!valin" class="inlineinfo">姓名长度应少于16个字符<br></span>
+                    姓名：<input type="text" maxlength="16" id="n" v-model="n" placeholder="长度不超过16个字符"
+                              :disabled="disabled" @input="vali('n', $event)" ref="inn">
+                </label>
+            </p>
+
+            <p>
+                性别*：<input type="radio" id="s0" name="s" value="0" v-model="s" required :disabled="disabled">
+                <label for="s0">男</label>
+                <input type="radio" id="s1" name="s" value="1" v-model="s" required :disabled="disabled">
+                <label for="s1">女</label>
+                <input type="radio" id="s2" name="s" value="2" v-model="s" required :disabled="disabled">
+                <label for="s2">其他</label>
+            </p>
+
+            <p>
+                <label for="b">出生日期*：</label>
+                <input type="date" id="b" v-model="b" required :disabled="disabled">
+            </p>
+
+            <p>
+                <label for="ph">
+                    <span v-if="!valiph" class="inlineinfo">电话号码长度应为1~11个字符，包含0~9<br></span>
+                    电话号码*：<input pattern="[0-9]{1,11}" id="ph" v-model="ph" placeholder="11个字符：0~9"
+                                 :disabled="disabled" required @input="vali('ph', $event)" ref="inph">
+                </label>
+            </p>
+
+            <button type="button" @click="add" :disabled="disabled">确认添加</button>
+            <button type="button" @click="reset" :disabled="disabled">重置</button>
+        </form>
+    </article>
+</div>
+
+<script type="text/javascript" src="script/server/req.js"></script>
+<script type="text/javascript" src="script/server/user.js"></script>
+<script type="text/javascript" src="script/server/employee.js"></script>
+<script type="text/javascript" src="script/comp/basic.js"></script>
+<script type="text/javascript" src="script/emp_add.js"></script>
+</body>
+</html>

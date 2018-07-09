@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post Tester</title>
+
+    <link href="style/common.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<form>
+    <label for="i">工号</label>
+    <input id="i" type="text" value="201003215141">
+    <button type="button" onclick="posteat()">刷卡</button>
+</form>
+
+<script type="text/javascript" src="script/server/req.js"></script>
+<script type="text/javascript" src="script/server/eat.js"></script>
+<script type="text/javascript">
+    let id = document.getElementById('i');
+    function posteat() {
+        eat(id.value, x => {
+            alert(x ? '请就餐' : '不能就餐');
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>账单</title>
+
+    <link href="style/common.css" type="text/css" rel="stylesheet">
+    <link href="style/bill.css" type="text/css" rel="stylesheet">
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<header>
+    <h1>帐单</h1>
+</header>
+
+<div id="app">
+    <nav>
+        <nav-x :user="user"></nav-x>
+    </nav>
+
+    <article>
+        <form novalidate>
+            <p v-if="info" class="info">{{info}}</p>
+
+            <label for="y">
+                <input pattern="^$|^[1-9][0-9]{3}$" id="y" v-model="year" placeholder="全部，1000~9999"
+                       :disabled="disabled" @input="year_vali" ref="year_input"> 年
+            </label>
+
+            <select id="m" v-model="month" :disabled="disabled">
+                <option value="">全部</option>
+                <option v-for="i in 12" :value="i">{{i}}</option>
+            </select>
+            <label for="m">月</label>&nbsp;&nbsp;
+
+            <label for="tp">类型:</label>
+            <select id="tp" v-model="type" :disabled="disabled">
+                <option value="">全部</option>
+                <option value="1">已结算</option>
+                <option value="2">未结算</option>
+            </select>
+            <button type="button" @click="query" :disabled="disabled">查询</button>
+        </form>
+
+        <ul>
+            <li v-for="bill in bills">
+                <div name="date">{{ bill.year }}年{{ bill.month }}月</div>
+                <div name="amt">{{ bill.amt }}元
+                <button v-if="!user.type || user.type === 2"
+                        :disabled="disabled" @click="details(bill)">详情
+                </button></div>
+                <div name="sta">{{ bill.checker === null ? '未结算' : `${bill.checker} 于
+                ${bill.check_time.getFullYear()}-${bill.check_time.getMonth()+1}-${bill.check_time.getDate()}
+                ${bill.check_time.getHours()}:${bill.check_time.getMinutes()}:${bill.check_time.getSeconds()} 确认 已结算` }}
+                <button v-if="(!user.type || user.type === 1) && bill.checker === null"
+                        @click="check(bill)" :disabled="disabled||checkdis||toMonth(bill)">确认结算
+                </button></div>
+            </li>
+        </ul>
+
+        <page-bar @update="updateBills" :value="page" :total="total" :re="bills" :disabled="disabled"></page-bar>
+
+        <div class="modal" :hidden="modalhid"></div>
+        <form novalidate class="modal" :hidden="modalhid">
+            <div v-if="modalSuc">
+                <p>确认成功</p>
+                <button type="button" @click="sucModal" :disabled="disabled||modaldis">确认</button>
+            </div>
+            <div v-else>
+                <p>账单时间：{{by}}年{{bm}}月</p>
+                <p v-if="modalinfo" class="info">{{modalinfo}}</p>
+                <p>帐号：{{user.id}}</p>
+                <p>
+                    <label for="p">请输入密码：</label>
+                    <input type="password" id="p" v-model="pwd" :disabled="disabled||modaldis">
+                </p>
+                <button type="button" @click="confirmModal" :disabled="disabled||modaldis">确认</button>
+                <button type="button" @click="closeModal" :disabled="disabled||modaldis">取消</button>
+            </div>
+        </form>
+
+    </article>
+</div>
+<script type="text/javascript" src="script/server/req.js"></script>
+<script type="text/javascript" src="script/server/user.js"></script>
+<script type="text/javascript" src="script/server/bill.js"></script>
+<script type="text/javascript" src="script/comp/basic.js"></script>
+<script type="text/javascript" src="script/bill.js"></script>
+<!-- script type="text/javascript">
+    geneBill('', 2018, 2, undefined, undefined,
+        (res)=>document.querySelector('p').innerHTML=JSON.stringify(res));
+</script -->
+</body>
+</html>

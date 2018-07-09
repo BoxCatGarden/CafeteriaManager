@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>职工列表</title>
+
+    <link href="style/common.css" type="text/css" rel="stylesheet">
+    <link href="style/col.css" type="text/css" rel="stylesheet">
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<header>
+    <h1>职工列表</h1>
+</header>
+
+<div id="app">
+    <nav>
+        <nav-x :user="user"></nav-x>
+    </nav>
+
+    <article>
+        <div v-if="!ls">
+            <form novalidate>
+                <p v-if="info" class="info">{{info}}</p>
+                <p>
+                    <span v-if="!valiid" class="inlineinfo">工号长度应少于12个字符</span>
+                    <span v-if="!valin" class="inlineinfo">姓名长度应少于16个字符</span>
+                </p>
+
+                <label for="i">
+                    工号：<input type="text" maxlength="12" id="i" v-model="id" placeholder="长度不超过12个字符"
+                              :disabled="disabled" @input="vali('id', $event)" ref="inid">
+                </label>
+
+                <label for="n">
+                    姓名：<input type="text" maxlength="16" id="n" v-model="n" placeholder="长度不超过16个字符"
+                              :disabled="disabled" @input="vali('n', $event)" ref="inn">
+                </label>
+
+                <button type="button" @click="query" :disabled="disabled">查询</button>
+            </form>
+
+            <table>
+                <colgroup>
+                    <col class="id">
+                    <col class="name">
+                    <col class="sex">
+                    <col class="phone">
+                    <col class="pctl">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th scope="col">工号</th>
+                    <th scope="col">姓名</th>
+                    <th scope="col">性别</th>
+                    <th scope="col">电话</th>
+                    <th scope="col" hidden>操作</th>
+                </tr>
+                </thead>
+                <tr v-for="e in emps">
+                    <td>{{e.emp_id}}</td>
+                    <td>{{e.name?e.name:'[Unknown]'}}</td>
+                    <td>{{e.sex?e.sex===1?'女':'其他':'男'}}</td>
+                    <td>{{e.phonenum}}</td>
+                    <td><button type="button" @click="details(e)" :disabled="disabled">更多</button></td>
+                </tr>
+            </table>
+
+            <page-bar @update="update" :value="page" :total="total" :re="emps" :disabled="disabled"></page-bar>
+        </div>
+        <div v-else-if="ls===1">
+            <p>工号：{{emp.emp_id}}</p>
+            <p>姓名：{{emp.name}}</p>
+            <p>性别：{{emp.sex?emp.sex===1?'女':'其他':'男'}}</p>
+            <p>年龄：{{age(emp)}}</p>
+            <p>生日：{{emp.birthday}}</p>
+            <p>电话：{{emp.phonenum}}</p>
+
+            <button type="button" @click="edit" :disabled="disabled">修改</button> &nbsp;
+            <button type="button" @click="del" :disabled="disabled">删除</button> &nbsp;&nbsp;
+            <button type="button" @click="quitD" :disabled="disabled">返回</button>
+        </div>
+        <form v-else novalidate>
+            <p>名称后带有“*”的为必填项</p>
+            <p v-if="einfo" class="info">{{einfo}}</p>
+            <p>工号：{{emp.emp_id}}</p>
+
+            <p>
+                <label for="en">
+                    <span v-if="!evalin" class="inlineinfo">姓名长度应少于16个字符<br></span>
+                    姓名：<input type="text" maxlength="16" id="en" v-model="en" placeholder="长度不超过16个字符"
+                              :disabled="disabled" @input="evali('n', $event)" ref="inen">
+                </label>
+            </p>
+
+            <p>
+                性别*：<input type="radio" id="s0" name="s" value="0" v-model="s" required :disabled="disabled">
+                <label for="s0">男</label>
+                <input type="radio" id="s1" name="s" value="1" v-model="s" required :disabled="disabled">
+                <label for="s1">女</label>
+                <input type="radio" id="s2" name="s" value="2" v-model="s" required :disabled="disabled">
+                <label for="s2">其他</label>
+            </p>
+
+            <p>
+                <label for="b">出生日期*：</label>
+                <input type="date" id="b" v-model="b" required :disabled="disabled">
+            </p>
+
+            <p>
+                <label for="ph">
+                    <span v-if="!evaliph" class="inlineinfo">电话号码长度应为1~11个字符，包含0~9<br></span>
+                    电话号码*：<input pattern="[0-9]{1,11}" id="ph" v-model="ph" placeholder="11个字符：0~9"
+                                 :disabled="disabled" required @input="evali('ph', $event)" ref="inph">
+                </label>
+            </p>
+
+            <button type="button" @click="modify" :disabled="disabled">确认修改</button>
+            <button type="button" @click="quitM" :disabled="disabled">取消</button>
+        </form>
+
+    </article>
+</div>
+
+<script type="text/javascript" src="script/server/req.js"></script>
+<script type="text/javascript" src="script/server/user.js"></script>
+<script type="text/javascript" src="script/server/employee.js"></script>
+<script type="text/javascript" src="script/comp/basic.js"></script>
+<script type="text/javascript" src="script/emp_list.js"></script>
+<!-- p id="raw"></p>
+<script type="text/javascript">
+    queryEmp('','',0,30,x=>{
+        document.getElementById('raw').innerHTML = JSON.stringify(x);
+    })
+</script -->
+</body>
+</html>

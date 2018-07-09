@@ -1,0 +1,99 @@
+html {
+    background-color: lightblue;
+}
+
+body {
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    font-size: 16pt;
+    width: 80%;
+    //background-color: #8a4182;
+}
+
+#app {
+    position: relative;
+    top: 0;
+}
+
+nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: solid 2px black;
+    background-color: ghostwhite;
+    font-size: 75%;
+    width: 18%;
+    padding: 1% 0 3% 1%;
+}
+
+nav a {
+    text-decoration: none;
+    color: dodgerblue;
+}
+
+article {
+    position: absolute;
+    top: 0;
+    right: 1%;
+    border: solid 2px black;
+    background-color: ghostwhite;
+    width: 75%;
+    padding: 2% 2% 4% 2%;
+}
+
+button {
+    border: solid 1px transparent;
+    box-shadow: 3px 3px 0 black;
+    background-color: violet;
+    font-size: 12pt;
+    color: white;
+}
+
+button:active {
+    box-shadow: inset 3px 3px 0 black;
+}
+
+button:disabled {
+    box-shadow: none;
+    background-color: plum;
+}
+
+input[type=text],
+input[type=password],
+input[type=date],
+input[pattern],
+select {
+    border: solid 2px black;
+    width: 10em;
+    font-size: 87.5%;
+}
+input[type=date] {
+    width: auto;
+}
+input[type=radio] {
+    font-size: 87.5%;
+}
+
+select {
+    vertical-align: bottom;
+    width: auto;
+}
+
+.info, .inlineinfo {
+    font-size: 80%;
+    font-style: oblique;
+    color: white;
+    background-color: red;
+    margin: 0;
+    border: solid 2px darkred;
+}
+
+table {
+    font-size: 80%;
+    text-align: left;
+    width: 80%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+

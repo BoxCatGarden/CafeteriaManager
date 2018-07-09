@@ -1,0 +1,16 @@
+{
+  "port": 3274,
+  "eat": {
+    "token": "20164as2235c",
+    "duration": [[11,13],[16,18]],
+    "fee": 3
+  },
+  "database.pool": {
+    "host": "localhost",
+    "port": 3306,
+    "user": "root",
+    "password": "your password",
+    "database": "cafeteria",
+    "connectionLimit": 10
+  }
+}

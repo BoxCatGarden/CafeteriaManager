@@ -1,0 +1,21 @@
+col.id {
+    width: 20%;
+}
+col.name {
+    width: 30%;
+}
+col.sex,col.num {
+    width: 10%;
+}
+col.ctl {
+    width: 25%;
+}
+col.time {
+    width: 35%;
+}
+col.phone {
+    width: 16%;
+}
+col.pctl {
+    width: 24%;
+}
